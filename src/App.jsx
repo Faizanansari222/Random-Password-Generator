@@ -2,8 +2,8 @@ import { use, useCallback, useEffect, useState } from "react";
 
 function App() {
   const [cher, setCher] = useState(8);
-  const [number, setNumber] = useState(false);
-  const [symbol, setSymbol] = useState(false);
+  const [allowedNumber, setAllowedNumber] = useState(false);
+  const [allowedSymbol, setAllowedSymbol] = useState(false);
   const [passowrd, setPassword] = useState("");
 
   useEffect(() => {
@@ -12,15 +12,18 @@ function App() {
 
   const passwordHendler = useCallback(() => {
     let pass = "";
-    let symbols = "!@#$%^&*(){}[]";
-    let numbers = "1234567890";
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    
-    for (let i = 0; i < cher; i++) {
-  pass += chars[Math.floor(Math.random() * chars.length)];
-}
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    if (allowedSymbol) pass += "!@#$%^&*(){}[]";
+
+    if (allowedNumber) pass += "1234567890";
+
+    for (let i = 1; i <= cher; i++) {
+      let char = chars[Math.floor(Math.random() * chars.length)];
+      pass += chars.charAt(char);
+    }
     setPassword(pass);
-  }, [cher, number, symbol, setPassword]);
+  }, [cher, allowedNumber, allowedSymbol, setPassword]);
   const handleCher = (e) => {
     setCher(e.target.value);
   };
@@ -50,11 +53,18 @@ function App() {
                 <label className="w-4">{cher}</label>
               </div>
               <div className="space-x-2">
-                <input className="" type="checkbox" />
+                <input
+                  //  onChange={setAllowedNumber((prev)=> !prev)}
+                  className=""
+                  type="checkbox"
+                />
                 <label>Numbers</label>
               </div>
               <div className="space-x-2">
-                <input onChange={(prev)=>!prev} type="checkbox" />
+                <input
+                  // onChange={setAllowedSymbol((prev) => !prev)}
+                  type="checkbox"
+                />
                 <label>symbols</label>
               </div>
             </div>
