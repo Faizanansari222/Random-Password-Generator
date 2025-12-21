@@ -6,24 +6,25 @@ function App() {
   const [allowedSymbol, setAllowedSymbol] = useState(false);
   const [passowrd, setPassword] = useState("");
 
-  useEffect(() => {
-    passwordHendler();
-  }, [cher]);
-
   const passwordHendler = useCallback(() => {
     let pass = "";
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    if (allowedSymbol) pass += "!@#$%^&*(){}[]";
+    if (allowedSymbol) chars += "!@#$%^&*(){}[]";
 
-    if (allowedNumber) pass += "1234567890";
+    if (allowedNumber) chars += "1234567890";
 
     for (let i = 1; i <= cher; i++) {
-      let char = chars[Math.floor(Math.random() * chars.length)];
-      pass += chars.charAt(char);
+      const index = Math.floor(Math.random() * chars.length);
+      pass += chars.charAt(index);
     }
+
     setPassword(pass);
   }, [cher, allowedNumber, allowedSymbol, setPassword]);
+  useEffect(() => {
+    passwordHendler();
+  }, [cher, allowedNumber, allowedSymbol]);
+
   const handleCher = (e) => {
     setCher(e.target.value);
   };
@@ -54,7 +55,7 @@ function App() {
               </div>
               <div className="space-x-2">
                 <input
-                  //  onChange={setAllowedNumber((prev)=> !prev)}
+                  onChange={() => setAllowedNumber((prev) => !prev)}
                   className=""
                   type="checkbox"
                 />
@@ -62,7 +63,7 @@ function App() {
               </div>
               <div className="space-x-2">
                 <input
-                  // onChange={setAllowedSymbol((prev) => !prev)}
+                  onChange={() => setAllowedSymbol((prev) => !prev)}
                   type="checkbox"
                 />
                 <label>symbols</label>
